@@ -20,6 +20,47 @@ void DHT::begin(void) {
   _lastreadtime = 0;
 }
 
+void DHT::readValue() {
+  read();
+}
+
+float DHT::getTemperatureCelsius(void) {
+  float f;
+  switch (_type) {
+    case DHT11:
+      f = data[2];
+      return f;
+    case DHT22:
+    case DHT21:
+      f = data[2] & 0x7F;
+      f *= 256;
+      f += data[3];
+      f /= 10;
+      if (data[2] & 0x80)
+	      f *= -1;
+      return f;
+  }
+  return NAN;
+}
+
+float DHT::getHumidity(void) {
+  float f;
+  switch (_type) {
+    case DHT11:
+      f = data[0];
+      return f;
+    case DHT22:
+    case DHT21:
+      f = data[0];
+      f *= 256;
+      f += data[1];
+      f /= 10;
+      return f;
+  }
+  return NAN;
+}
+
+
 //boolean S == Scale.  True == Farenheit; False == Celcius
 float DHT::readTemperature(bool S) {
   float f;
