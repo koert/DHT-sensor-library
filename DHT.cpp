@@ -158,7 +158,7 @@ boolean DHT::read(void) {
     counter = 0;
     while (digitalRead(_pin) == laststate) {
       counter++;
-      delayMicroseconds(1);
+      delayMicroseconds(3);
       if (counter == 255) {
         break;
       }
